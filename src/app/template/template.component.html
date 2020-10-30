@@ -1,0 +1,11 @@
+<form [formGroup]="loginForm" (ngSubmit)='login()'>
+  <fieldset formGroupName="name">
+    <label>Vorname:</label>
+    <input type="text" name="vorname" formControlName="vorname">
+    <label>Nachname:</label>
+    <input type="text" name="nachname" formControlName="nachname">
+  </fieldset>
+  <label>Passwort:</label>
+  <input type="password" name="pass" formControlName="pass">
+  <button type="submit">Login</button>
+</form>
