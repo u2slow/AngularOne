@@ -1,0 +1,27 @@
+@font-face{
+  font-family: Roboto;
+  src: url(Roboto-Bold.ttf);
+}
+#important{
+  background: transparent;
+  border: none;
+  color: white;
+  width: 200px;
+  height: 300px;
+  left: 50%;
+  margin-left: -100px;
+  margin-top: 300px;
+  font-size: 200px;
+  font-family: Roboto;
+}
+body{
+  text-align: center;
+}
+div{
+  background-color: rgb(65, 65, 65);
+  position: absolute;
+  top: 0%;
+  bottom: 0%;
+  left: 0%;
+  right: 0%;
+}
