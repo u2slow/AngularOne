@@ -15,6 +15,7 @@ import { TestComponent } from './test/test.component';
 import { HttpClientModule } from '@angular/common/http';
 import { TestDirective } from './test.directive';
 import { TimeComponent } from './time/time.component';
+import { NavbarComponent } from './navbar/navbar.component';
 
 const meineRouten: Routes = [
   {path: 'video', component: SecondComponent},
@@ -32,7 +33,8 @@ const meineRouten: Routes = [
     TestComponent,
     TemplateComponent,
     TestDirective,
-    TimeComponent
+    TimeComponent,
+    NavbarComponent
   ],
   imports: [
     RouterModule.forRoot(meineRouten),
