@@ -10,7 +10,7 @@ import { time } from 'console';
 })
 export class TimeComponent implements OnInit {
   timerleft: number = 240;
-  minuten: number = 1;
+  minuten: number = 0;
   isrunnig = false;
   interval;
   breakinterval;
