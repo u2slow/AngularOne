@@ -16,12 +16,14 @@ import { HttpClientModule } from '@angular/common/http';
 import { TestDirective } from './test.directive';
 import { TimeComponent } from './time/time.component';
 import { NavbarComponent } from './navbar/navbar.component';
+import { HomeComponent } from './home/home.component';
 
 const meineRouten: Routes = [
   {path: 'video', component: SecondComponent},
-  {path: '', component: TestComponent},
+  {path: 'tests', component: TestComponent},
   {path: 'template', component: TemplateComponent},
-  {path: 'timer', component: TimeComponent}
+  {path: 'timer', component: TimeComponent},
+  {path: 'home', component: HomeComponent}
 ];
 
 
@@ -34,7 +36,8 @@ const meineRouten: Routes = [
     TemplateComponent,
     TestDirective,
     TimeComponent,
-    NavbarComponent
+    NavbarComponent,
+    HomeComponent
   ],
   imports: [
     RouterModule.forRoot(meineRouten),
