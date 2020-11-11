@@ -9,14 +9,14 @@ import { time } from 'console';
   styleUrls: ['./time.component.css']
 })
 export class TimeComponent implements OnInit {
-  timerleft: number = 240;
-  minuten: number = 0;
+  timerleft = 240;
+  minuten = 0;
   isrunnig = false;
   interval;
   breakinterval;
   breaktimesek = 0;
   breakoutput = this.minuten.toString() + 'm ' + this.breaktimesek.toString() + 'sec';
-  infoswitch: String = this.breakoutput;
+  infoswitch: string = this.breakoutput;
   showmin = true;
   firstTime = true;
 
@@ -24,7 +24,7 @@ export class TimeComponent implements OnInit {
   }
 
   startTimer(){
-    this.interval= setInterval(() => {
+    this.interval = setInterval(() => {
       if (this.isrunnig){
       if (this.timerleft > 0){
         this.timerleft--;
@@ -36,7 +36,7 @@ export class TimeComponent implements OnInit {
         this.infoswitch = this.timerleft.toString();
       }
       }
-    }, 1000 )
+    }, 1000);
   }
   breaktimer(){
     this.breakinterval = setInterval(() => {
@@ -52,7 +52,7 @@ export class TimeComponent implements OnInit {
         this.infoswitch = this.breakoutput;
       }
     }, 1000
-    )
+    );
   }
 
 

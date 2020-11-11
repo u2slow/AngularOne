@@ -19,3 +19,6 @@ a{
     vertical-align: middle;
     text-decoration: none;
 }
+.item:hover{
+  text-decoration: underline;
+}

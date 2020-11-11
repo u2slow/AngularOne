@@ -3,18 +3,18 @@
   src: url(Roboto-Bold.ttf);
 }
 div{
-top: 5%;
+  top: 5%;
   margin-top: 0%;
   background-color: firebrick;
   position: absolute;
   bottom: 0%;
   left: 0%;
   right: 0;
-  text-align: center;
-
 }
-p{
-  font-size: 300px;
-  color: azure;
+.head{
+  font-size: 60px;
+  text-align: center;
+  color: aqua;
   font-family: Roboto;
+  text-decoration: underline;
 }

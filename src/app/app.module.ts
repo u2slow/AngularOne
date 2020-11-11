@@ -1,3 +1,4 @@
+import { TetrisComponent } from './tetris/tetris.component';
 import { MeinModule } from './mein/mein.module';
 import { TemplateComponent } from './template/template.component';
 import { RouterModule, Routes } from '@angular/router';
@@ -23,7 +24,8 @@ const meineRouten: Routes = [
   {path: 'tests', component: TestComponent},
   {path: 'template', component: TemplateComponent},
   {path: 'timer', component: TimeComponent},
-  {path: 'home', component: HomeComponent}
+  {path: 'home', component: HomeComponent},
+  {path: 'tetris', component: TetrisComponent}
 ];
 
 
