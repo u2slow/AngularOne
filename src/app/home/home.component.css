@@ -2,3 +2,46 @@
   font-family: Roboto;
   src: url(Roboto-Bold.ttf);
 }
+.main{
+  position: absolute;
+  top: 5%;
+  left: 0%;
+  right: 0%;
+  bottom: 0%;
+  font-family: Roboto;
+}
+h1{
+  text-align: center;
+  grid-row: 1;
+  grid-column: 2;
+}
+.content{
+  display: grid;
+  padding-top: 5%;
+}
+p{
+  font-size: 30px;
+}
+.Hans{
+  grid-row: 1;
+  grid-column: 1;
+}
+.Fred{
+  grid-row: 2;
+  grid-column: 2;
+}
+.Dieter{
+  grid-row: 3;
+  grid-column: 1;
+}
+.Olaf{
+  grid-row: 4;
+  grid-column: 2;
+}
+.Peter{
+  grid-row: 5;
+  grid-column: 1;
+}
+img{
+  float: left;
+}
