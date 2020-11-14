@@ -2,7 +2,7 @@
   font-family: Roboto;
   src: url(Roboto-Bold.ttf);
 }
-div{
+.divhead{
   top: 5%;
   margin-top: 0%;
   background-color: firebrick;
@@ -17,4 +17,25 @@ div{
   color: aqua;
   font-family: Roboto;
   text-decoration: underline;
+}
+.game{
+  height: 700px;
+  width: 700px;
+  margin-left: 31%;
+  border: black;
+  border-style: solid;
+}
+#raster{
+  background-color: gainsboro;
+  display: grid;
+  width: 100%;
+  height: 100%;
+}
+#start{
+  font-size: 60px;
+  font-family: roboto;
+  background: transparent;
+}
+.rasterElement{
+  background-color: green;
 }
