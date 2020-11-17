@@ -11,5 +11,10 @@ export class TestComponent implements OnInit {
 
   ngOnInit(): void {
   }
-
+  prestyle(){
+    this.style('1/4');
+  }
+  style(id){
+    console.log(id[0],id[2]);
+  }
 }
