@@ -22,10 +22,10 @@ export class TetrisComponent implements OnInit {
     var newN;
     for (let i = 1; i < 9; i++){
       newI = i-1;
-      this.field[newI][0] = false;
+      this.field[newI][0] = 0;
       for (let n = 1; n < 9; n++){
         newN = n;
-        this.field[newI][newN - 1] = false;
+        this.field[newI][newN - 1] = 0;
         const div = document.createElement('div');
         div.style.gridColumn = n.toString();
         div.style.gridRow = i.toString();
@@ -35,22 +35,14 @@ export class TetrisComponent implements OnInit {
         div.style.borderWidth='2px';
         main?.appendChild(div);
       }
-      var gamerun = true;
     }
+    var gamerun = true;
     while (gamerun){
         const a = this.buildFigure();
-        const gameinterval = setInterval(() => {
-          for (let i = 0; i < 8; i++){
-            for (let n = 0; i < 8; i++){
-              if (this.field[i][n]){
-                var item = document.getElementById(i.toString + '/'+ n.toString);
-                item.style.backgroundColor = 'gainsboro';
-                newI = i + 1;
-              }
-            }
-          }
-        }, 500);
-        clearInterval(gameinterval);
+        var gameinterval = setInterval(() => {
+          
+        }, 1000);
+        
         gamerun = false;
     }
 
@@ -65,6 +57,7 @@ export class TetrisComponent implements OnInit {
       return 1;
     }
     else if (random > 1 && random < 2){
+
       this.style('1/4', 'yellow');
       this.style('2/4', 'yellow');
       this.style('3/4', 'yellow');
@@ -113,7 +106,7 @@ export class TetrisComponent implements OnInit {
       item.style.borderColor = color;
       var i = id[0] - 1;
       var n = id[2] - 1;
-      this.field[i][n] = true;
+      this.field[i][n] = 2;
     }
 }/* in while schleife
 random zahl um die figur zu bestimmen
@@ -123,4 +116,8 @@ in while
 chaeck ob eine reihe voll ist wenn ja dann alle
 true blöcke einen nach unten durch durloopen der gesamten liste
 dann wieder von vorne
-dann wieder von vorne*/
+dann wieder von vorne
+
+buildfigure 
+
+in den if abschnitten muss nur die jewaligen ids in einem Array gespeihcert werden und dann am wnde styöe() diese Arry dann an den Intervall ao spart man sich das loopen durch das ganze feld*/
