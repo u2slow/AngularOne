@@ -1,5 +1,8 @@
 import { element } from 'protractor';
 import { Component, OnInit } from '@angular/core';
+import { range } from 'rxjs';
+import { strict } from 'assert';
+import { stringify } from 'querystring';
 
 @Component({
   selector: 'app-tetris',
@@ -15,6 +18,7 @@ export class TetrisComponent implements OnInit {
   }
 
   field = [[], [], [], [], [], [], [], []];
+  gameinterval;
   startGame(){
     document.getElementById('start').remove();
     const main = document.getElementById('raster');
@@ -36,69 +40,60 @@ export class TetrisComponent implements OnInit {
         main?.appendChild(div);
       }
     }
-    var gamerun = true;
-    while (gamerun){
-        const a = this.buildFigure();
-        var gameinterval = setInterval(() => {
-          
-        }, 1000);
-        
-        gamerun = false;
-    }
+    this.gameloop();
 
   }
-  buildFigure():number{
+  gameloop(){
+    var a = this.buildFigure();
+    var oldA = a;
+    console.log(oldA);
+    this.gameinterval = setInterval(() => {
+      for (let i = 0; i < 4; i++){
+        document.getElementById(a[i]).style.backgroundColor = 'gainsboro';
+        document.getElementById(a[i]).style.borderColor = 'grey';
+        a[i] = String(Number(a[i][0]) + 1) + a[i].substr(1, 2);
+        if (a[i][0] === '8'){
+          console.log("Stop");
+          this.stop();
+        }
+      }
+      for (let i = 0; i < 4; i++){
+        this.style(a[i], a[4]);
+      }
+    }, 100);
+  }
+  stop(){
+    clearInterval(this.gameinterval);
+    this.gameloop();
+  }
+  buildFigure():string[]{
     const random = Math.random() * 7;
+    var paras = [];
     if (random < 1){
-      this.style('1/4','green');
-      this.style('1/5','green');
-      this.style('2/4','green');
-      this.style('2/3','green');
-      return 1;
+      paras = ['1/4', '1/5', '2/4', '2/3', 'green'];
     }
     else if (random > 1 && random < 2){
-
-      this.style('1/4', 'yellow');
-      this.style('2/4', 'yellow');
-      this.style('3/4', 'yellow');
-      this.style('3/5', 'yellow');
-      return 2;
+      paras = ['1/4', '2/4', '3/4', '3/5', 'yellow'];
     }
     else if (random > 2 && random < 3){
-      this.style('1/4', 'turquoise');
-      this.style('1/5', 'turquoise');
-      this.style('2/4', 'turquoise');
-      this.style('2/5', 'turquoise');
-      return 3;
+      paras = ['1/4', '1/5', '2/4', '2/5', 'turquoise'];
     }
     else if (random > 3 && random < 4){
-      this.style('1/4', 'blue');
-      this.style('2/4', 'blue');
-      this.style('3/4', 'blue');
-      this.style('4/4', 'blue');
-      return 4;
+      paras = ['1/4', '2/4', '3/4', '4/4', 'blue'];
     }
     else if (random > 4 && random < 5){
-      this.style('1/3', 'orange');
-      this.style('1/4', 'orange');
-      this.style('2/4', 'orange');
-      this.style('2/5', 'orange');
-      return 5;
+      paras = ['1/3', '1/4', '2/4', '2/5', 'orange'];
     }
     else if (random > 5 && random < 6){
-      this.style('1/4', 'grey');
-      this.style('2/4', 'grey');
-      this.style('3/4', 'grey');
-      this.style('3/5', 'grey');
-      return 6;
+      paras = ['1/4', '2/4', '3/4', '3/5', 'grey'];
     }
     else if (random > 6){
-      this.style('1/3', 'black');
-      this.style('1/4', 'black');
-      this.style('1/5', 'black');
-      this.style('2/3', 'black');
-      return 7;
+      paras = ['1/3', '1/4', '1/5', '2/3', 'black'];
     }
+    for (let i = 0; i < 4; i++){
+      this.style(paras[i], paras[4]);
+    }
+    return paras;
     }
     style(id, color){
       const item = document.getElementById(id);
@@ -118,6 +113,8 @@ true blöcke einen nach unten durch durloopen der gesamten liste
 dann wieder von vorne
 dann wieder von vorne
 
-buildfigure 
+buildfigure
 
-in den if abschnitten muss nur die jewaligen ids in einem Array gespeihcert werden und dann am wnde styöe() diese Arry dann an den Intervall ao spart man sich das loopen durch das ganze feld*/
+in den if abschnitten muss nur die jewaligen ids in einem Array gespeihcert werden und dann
+ am wnde styöe() diese Arry dann an den Intervall ao spart man sich das loopen durch das ganze
+ feld*/
