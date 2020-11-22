@@ -3,6 +3,7 @@ import { Component, OnInit } from '@angular/core';
 import { range } from 'rxjs';
 import { strict } from 'assert';
 import { stringify } from 'querystring';
+import { NumberSymbol } from '@angular/common';
 
 @Component({
   selector: 'app-tetris',
@@ -46,24 +47,30 @@ export class TetrisComponent implements OnInit {
   gameloop(){
     var a = this.buildFigure();
     var oldA = a;
-    console.log(oldA);
     this.gameinterval = setInterval(() => {
       for (let i = 0; i < 4; i++){
-        document.getElementById(a[i]).style.backgroundColor = 'gainsboro';
-        document.getElementById(a[i]).style.borderColor = 'grey';
+        this.styleback(a[i]);
         a[i] = String(Number(a[i][0]) + 1) + a[i].substr(1, 2);
         if (a[i][0] === '8'){
-          console.log("Stop");
-          this.stop();
+          this.stop(a);
         }
+
       }
       for (let i = 0; i < 4; i++){
         this.style(a[i], a[4]);
       }
     }, 100);
   }
-  stop(){
+  stop(a){
     clearInterval(this.gameinterval);
+    for (let i = 0; i < 3; i++){
+      var n = Number(a[i][0]);
+      var k = Number(a[i][2]);
+      console.log(n,k);
+      console.log(this.field);
+      this.field[n][k] = 1;
+    }
+    console.log(this.field);
     this.gameloop();
   }
   buildFigure():string[]{
@@ -99,9 +106,17 @@ export class TetrisComponent implements OnInit {
       const item = document.getElementById(id);
       item.style.backgroundColor = color;
       item.style.borderColor = color;
-      var i = id[0] - 1;
-      var n = id[2] - 1;
+      const i = id[0] - 1;
+      const n = id[2] - 1;
       this.field[i][n] = 2;
+    }
+    styleback(id){
+      const item = document.getElementById(id);
+      item.style.backgroundColor = 'gainsboro';
+      item.style.borderColor = 'grey';
+      const i = id[0] - 1;
+      const n = id[2] - 1;
+      this.field[i][n] = 0;
     }
 }/* in while schleife
 random zahl um die figur zu bestimmen
