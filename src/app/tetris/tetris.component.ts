@@ -11,67 +11,23 @@ import { NumberSymbol } from '@angular/common';
   styleUrls: ['./tetris.component.css']
 })
 export class TetrisComponent implements OnInit {
-
+  fild: Array<item>;
+  gameinterval;
   constructor() {
   }
 
   ngOnInit(): void {
   }
-
-  field = [[], [], [], [], [], [], [], []];
-  gameinterval;
   startGame(){
-    document.getElementById('start').remove();
-    const main = document.getElementById('raster');
-    var newI;
-    var newN;
-    for (let i = 1; i < 9; i++){
-      newI = i-1;
-      this.field[newI][0] = 0;
-      for (let n = 1; n < 9; n++){
-        newN = n;
-        this.field[newI][newN - 1] = 0;
-        const div = document.createElement('div');
-        div.style.gridColumn = n.toString();
-        div.style.gridRow = i.toString();
-        div.id = i + '/' + n;
-        div.style.borderStyle='solid';
-        div.style.borderColor='grey';
-        div.style.borderWidth='2px';
-        main?.appendChild(div);
-      }
-    }
-    this.gameloop();
-
-  }
-  gameloop(){
-    var a = this.buildFigure();
-    var oldA = a;
     this.gameinterval = setInterval(() => {
-      for (let i = 0; i < 4; i++){
-        this.styleback(a[i]);
-        a[i] = String(Number(a[i][0]) + 1) + a[i].substr(1, 2);
-        if (a[i][0] === '8'){
-          this.stop(a);
-        }
-
+      if (this.checkGame()){
+        for (var i = 0; i< 7; i++)
+        {}
       }
-      for (let i = 0; i < 4; i++){
-        this.style(a[i], a[4]);
-      }
-    }, 100);
+    },500)
   }
-  stop(a){
-    clearInterval(this.gameinterval);
-    for (let i = 0; i < 3; i++){
-      var n = Number(a[i][0]);
-      var k = Number(a[i][2]);
-      console.log(n, k);
-      console.log(this.field);
-      this.field[n][k] = 1;
-    }
-    console.log(this.field);
-    this.gameloop();
+  checkGame(): boolean{
+    return true;
   }
   buildFigure():string[]{
     const random = Math.random() * 7;
@@ -97,42 +53,30 @@ export class TetrisComponent implements OnInit {
     else if (random > 6){
       paras = ['1/3', '1/4', '1/5', '2/3', 'black'];
     }
-    for (let i = 0; i < 4; i++){
-      this.style(paras[i], paras[4]);
-    }
     return paras;
-    }
-    style(id, color){
-      const item = document.getElementById(id);
-      item.style.backgroundColor = color;
-      item.style.borderColor = color;
-      const i = id[0] - 1;
-      const n = id[2] - 1;
-      this.field[i][n] = 2;
-    }
-    styleback(id){
-      const item = document.getElementById(id);
-      item.style.backgroundColor = 'gainsboro';
-      item.style.borderColor = 'grey';
-      const i = id[0] - 1;
-      const n = id[2] - 1;
-      this.field[i][n] = 0;
     }
 }
 class item{
-  constructor() {
-    var positionid:String = '';
-    var color: String;
-    var bordercolor:String;
-    var status:Number;
+  positionid: string;
+  color: string;
+  bordercolor: string;
+  status: number;
+  constructor(){
+    this.color = 'gainsboro';
+    this.bordercolor = 'grey';
+    this.status = 0;
   }
-  var hallo = 'ich';
   colorSetter(color){
     if (color = 'gainsboro'){
       this.color = color;
-      this.borderColor = 'grey';
+      this.bordercolor = 'grey';
+    }
+    else{
+      this.color  = color;
+      this.bordercolor = color;
     }
   }
+
 }
 /* in while schleife
 random zahl um die figur zu bestimmen
