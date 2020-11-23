@@ -66,7 +66,7 @@ export class TetrisComponent implements OnInit {
     for (let i = 0; i < 3; i++){
       var n = Number(a[i][0]);
       var k = Number(a[i][2]);
-      console.log(n,k);
+      console.log(n, k);
       console.log(this.field);
       this.field[n][k] = 1;
     }
@@ -118,7 +118,23 @@ export class TetrisComponent implements OnInit {
       const n = id[2] - 1;
       this.field[i][n] = 0;
     }
-}/* in while schleife
+}
+class item{
+  constructor() {
+    var positionid:String = '';
+    var color: String;
+    var bordercolor:String;
+    var status:Number;
+  }
+  var hallo = 'ich';
+  colorSetter(color){
+    if (color = 'gainsboro'){
+      this.color = color;
+      this.borderColor = 'grey';
+    }
+  }
+}
+/* in while schleife
 random zahl um die figur zu bestimmen
 figur fällt durch einen intervall
 if der nächste true dann stop und wieder von vorne
