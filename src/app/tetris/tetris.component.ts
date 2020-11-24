@@ -11,52 +11,88 @@ import { NumberSymbol } from '@angular/common';
   styleUrls: ['./tetris.component.css']
 })
 export class TetrisComponent implements OnInit {
-  fild: Array<item>;
-  gameinterval;
+  field: Array<Array<Item>> = [[new Item(), new Item(), new Item(), new Item(), new Item(), new Item(), new Item(), new Item()],
+                               [new Item(), new Item(), new Item(), new Item(), new Item(), new Item(), new Item(), new Item()],
+                               [new Item(), new Item(), new Item(), new Item(), new Item(), new Item(), new Item(), new Item()],
+                               [new Item(), new Item(), new Item(), new Item(), new Item(), new Item(), new Item(), new Item()],
+                               [new Item(), new Item(), new Item(), new Item(), new Item(), new Item(), new Item(), new Item()],
+                               [new Item(), new Item(), new Item(), new Item(), new Item(), new Item(), new Item(), new Item()],
+                               [new Item(), new Item(), new Item(), new Item(), new Item(), new Item(), new Item(), new Item()],
+                               [new Item(), new Item(), new Item(), new Item(), new Item(), new Item(), new Item(), new Item()]];
+  gameinterval: any;
   constructor() {
   }
 
   ngOnInit(): void {
   }
   startGame(){
+    document.getElementById('start').remove();
+    for (let i = 0; i < 8; i++){
+      for (let k = 0; k < 8; k++){
+        const elemet = document.getElementById('raster');
+        const newElement = document.createElement('div');
+        const id = String(i) + '/' + String(k);
+        newElement.id = id;
+        newElement.style.gridColumn = String(k + 1);
+        newElement.style.gridRow = String(i + 1);
+        elemet.appendChild(newElement);
+        this.field[i][k].positionid = String(id);
+        this.field[i][k].colorSetter('gainsboro');
+      }
+    }
+    this.style();
+    console.log (this.field);
     this.gameinterval = setInterval(() => {
       if (this.checkGame()){
-        for (var i = 0; i< 7; i++)
-        {}
+        this.buildFigure();
+        this.style();
       }
-    },500)
+    }, 500);
   }
   checkGame(): boolean{
     return true;
   }
-  buildFigure():string[]{
-    const random = Math.random() * 7;
-    var paras = [];
+  style(){
+    for (let i = 0; i < 8; i++){
+      for (let k = 0; k < 8; k++){
+        const elemet = document.getElementById(this.field[i][k].positionid);
+        elemet.style.borderStyle = 'solid';
+        elemet.style.backgroundColor = this.field[i][k].color;
+        elemet.style.borderColor = this.field[i][k].bordercolor;
+      }
+    }
+  }
+  buildFigure(){
+    const random = Math.random() * 5;
+    let paras = [];
     if (random < 1){
-      paras = ['1/4', '1/5', '2/4', '2/3', 'green'];
+      paras = ['03', '04', '14', '15', 'green'];
     }
     else if (random > 1 && random < 2){
-      paras = ['1/4', '2/4', '3/4', '3/5', 'yellow'];
+      paras = ['03', '13', '23', '24', 'yellow'];
     }
     else if (random > 2 && random < 3){
-      paras = ['1/4', '1/5', '2/4', '2/5', 'turquoise'];
+      paras = ['03', '04', '13', '14', 'turquoise'];
     }
     else if (random > 3 && random < 4){
-      paras = ['1/4', '2/4', '3/4', '4/4', 'blue'];
+      paras = ['03', '13', '23', '33', 'blue'];
     }
     else if (random > 4 && random < 5){
-      paras = ['1/3', '1/4', '2/4', '2/5', 'orange'];
+      paras = ['02', '03', '13', '14', 'orange'];
     }
     else if (random > 5 && random < 6){
-      paras = ['1/4', '2/4', '3/4', '3/5', 'grey'];
+      paras = ['03', '13', '23', '25', 'grey'];
     }
     else if (random > 6){
-      paras = ['1/3', '1/4', '1/5', '2/3', 'black'];
+      paras = ['02', '03', '14', '12', 'black'];
     }
-    return paras;
+    for (let i = 0; i < 4; i++){
+      this.field[Number(paras[i][0])][Number( paras[i][1])].colorSetter(paras[4]);
+      this.field[Number(paras[i][0])][Number( paras[i][1])].status = 2;
+    }
     }
 }
-class item{
+class Item{
   positionid: string;
   color: string;
   bordercolor: string;
@@ -67,7 +103,7 @@ class item{
     this.status = 0;
   }
   colorSetter(color){
-    if (color = 'gainsboro'){
+    if (color === 'gainsboro'){
       this.color = color;
       this.bordercolor = 'grey';
     }
@@ -76,7 +112,6 @@ class item{
       this.bordercolor = color;
     }
   }
-
 }
 /* in while schleife
 random zahl um die figur zu bestimmen

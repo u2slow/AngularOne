@@ -31,6 +31,9 @@
   border: black;
   border-style: solid;
 }
+#raster > div {
+  border-style: double;
+}
 #start{
   font-size: 60px;
   font-family: roboto;
