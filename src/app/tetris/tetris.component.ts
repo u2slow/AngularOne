@@ -20,6 +20,9 @@ export class TetrisComponent implements OnInit {
                                [new Item(), new Item(), new Item(), new Item(), new Item(), new Item(), new Item(), new Item()],
                                [new Item(), new Item(), new Item(), new Item(), new Item(), new Item(), new Item(), new Item()]];
   gameinterval: any;
+  haveparas = false;
+  paras;
+  originalPras;
   constructor() {
   }
 
@@ -44,10 +47,59 @@ export class TetrisComponent implements OnInit {
     console.log (this.field);
     this.gameinterval = setInterval(() => {
       if (this.checkGame()){
-        this.buildFigure();
+        if (!this.haveparas){
+          this.originalPras = this.buildFigure();
+          this.paras = this.originalPras;
+          console.log(this.paras);
+          this.haveparas = true;
+        }
+        this.editparas();
+        console.log(this.paras);
+        console.log(this.originalPras);
+        this.fallfigures();
         this.style();
       }
     }, 500);
+  }
+  fallfigures(){
+    for (let i = 0; i < 4; i++){
+      console.log(Number(this.originalPras[i][0]));
+      console.log(this.field[Number(this.originalPras[i][0])][Number(this.originalPras[i][1])].status);
+      this.field[Number(this.originalPras[i][0])][Number(this.originalPras[i][1])].status = 0;
+      this.field[Number(this.originalPras[0])][Number(this.field[1])].colorSetter('gainsboro');
+      this.originalPras[i] = String(Number(this.originalPras[i][0]) + 1);
+      this.field[Number(this.originalPras[0])][Number(this.field[1])].status = 2;
+      this.field[Number(this.originalPras[0])][Number(this.field[1])].colorSetter(this.originalPras[4]);
+    }
+  }
+  editparas(){
+    // tslint:disable-next-line: forin
+    var maches: Array<string> = [];
+    for (let i in this.paras){
+      if (this.paras[i] === undefined){
+        continue;
+      }
+      for (let k in this.paras){
+        if (i === k){
+          continue;
+        }
+        if (this.paras[k] === undefined){
+          continue;
+        }
+        if (this.paras[k][1] === this.paras[i][1]){
+          maches.push(String(this.paras[i]) + '/' + String(this.paras[k]));
+          delete(this.paras[i]);
+        }
+      }
+      var newParas = [];
+      for (let i of this.paras){
+        if (i === undefined){
+          continue;
+        }
+        newParas.push(i);
+      }
+      this.paras = newParas;
+    }
   }
   checkGame(): boolean{
     return true;
@@ -62,7 +114,7 @@ export class TetrisComponent implements OnInit {
       }
     }
   }
-  buildFigure(){
+  buildFigure(): Array<string>{
     const random = Math.random() * 5;
     let paras = [];
     if (random < 1){
@@ -90,6 +142,7 @@ export class TetrisComponent implements OnInit {
       this.field[Number(paras[i][0])][Number( paras[i][1])].colorSetter(paras[4]);
       this.field[Number(paras[i][0])][Number( paras[i][1])].status = 2;
     }
+    return paras;
     }
 }
 class Item{
