@@ -49,6 +49,7 @@ export class TetrisComponent implements OnInit {
       if (this.checkGame()){
         if (!this.haveparas){
           this.originalPras = this.buildFigure();
+          console.log(this.originalPras);
           this.paras = this.originalPras;
           console.log(this.paras);
           this.haveparas = true;
@@ -66,10 +67,10 @@ export class TetrisComponent implements OnInit {
       console.log(Number(this.originalPras[i][0]));
       console.log(this.field[Number(this.originalPras[i][0])][Number(this.originalPras[i][1])].status);
       this.field[Number(this.originalPras[i][0])][Number(this.originalPras[i][1])].status = 0;
-      this.field[Number(this.originalPras[0])][Number(this.field[1])].colorSetter('gainsboro');
-      this.originalPras[i] = String(Number(this.originalPras[i][0]) + 1);
-      this.field[Number(this.originalPras[0])][Number(this.field[1])].status = 2;
-      this.field[Number(this.originalPras[0])][Number(this.field[1])].colorSetter(this.originalPras[4]);
+      this.field[Number(this.originalPras[1][0])][Number(this.originalPras[i][1])].colorSetter('gainsboro');
+      this.originalPras[i] = String(Number(this.originalPras[i][0]) + 1) + this.originalPras[i][1];
+      this.field[Number(this.originalPras[1][0])][Number(this.originalPras[i][1])].status = 2;
+      this.field[Number(this.originalPras[1][0])][Number(this.originalPras[i][1])].colorSetter(this.originalPras[4]);
     }
   }
   editparas(){
