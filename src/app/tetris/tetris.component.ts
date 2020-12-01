@@ -21,7 +21,7 @@ export class TetrisComponent implements OnInit {
                                [new Item(), new Item(), new Item(), new Item(), new Item(), new Item(), new Item(), new Item()]];
   gameinterval: any;
   haveparas = false;
-  paras;
+  editedparas;
   originalPras;
   constructor() {
   }
@@ -43,24 +43,31 @@ export class TetrisComponent implements OnInit {
         this.field[i][k].colorSetter('gainsboro');
       }
     }
-    this.style();
+    /*this.style();
     console.log (this.field);
     this.gameinterval = setInterval(() => {
       if (this.checkGame()){
         if (!this.haveparas){
           this.originalPras = this.buildFigure();
-          console.log(this.originalPras);
-          this.paras = this.originalPras;
-          console.log(this.paras);
           this.haveparas = true;
         }
-        this.editparas();
-        console.log(this.paras);
-        console.log(this.originalPras);
-        this.fallfigures();
+        this.editedparas = this.editparas();
+        console.log('original: ', this.originalPras);
+        //this.fallfigures();
         this.style();
       }
-    }, 500);
+    }, 5000);*/
+    this.style();
+    if (this.checkGame()){
+      if (!this.haveparas){
+        this.originalPras = this.buildFigure();
+        this.haveparas = true;
+      }
+      this.editedparas = this.editparas();
+      console.log('original: ', this.originalPras);
+      //this.fallfigures();
+      this.style();
+    }
   }
   fallfigures(){
     for (let i = 0; i < 4; i++){
@@ -73,34 +80,21 @@ export class TetrisComponent implements OnInit {
       this.field[Number(this.originalPras[1][0])][Number(this.originalPras[i][1])].colorSetter(this.originalPras[4]);
     }
   }
-  editparas(){
-    // tslint:disable-next-line: forin
-    var maches: Array<string> = [];
-    for (let i in this.paras){
-      if (this.paras[i] === undefined){
-        continue;
-      }
-      for (let k in this.paras){
-        if (i === k){
+  editparas(): Array<string>{
+    let paras = [];
+    for (let i of this.originalPras){
+      for (let k of this.originalPras){
+        if (i === k || i === undefined || k === undefined){
           continue;
         }
-        if (this.paras[k] === undefined){
-          continue;
-        }
-        if (this.paras[k][1] === this.paras[i][1]){
-          maches.push(String(this.paras[i]) + '/' + String(this.paras[k]));
-          delete(this.paras[i]);
+        if (i[1] === k[1] && i[0] > k[0]){
+          paras.push(i);
+          console.log(i);
         }
       }
-      var newParas = [];
-      for (let i of this.paras){
-        if (i === undefined){
-          continue;
-        }
-        newParas.push(i);
-      }
-      this.paras = newParas;
+      console.log('paras: ',paras);
     }
+    return paras;
   }
   checkGame(): boolean{
     return true;
