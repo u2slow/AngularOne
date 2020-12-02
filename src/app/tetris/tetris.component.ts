@@ -47,32 +47,43 @@ export class TetrisComponent implements OnInit {
     this.style();
     console.log (this.field);
     this.gameinterval = setInterval(() => {
-
-    }, 500);
-    if (this.checkGame()){
+      if (this.checkGame()){
         if (!this.haveparas){
           this.originalPras = this.buildFigure();
           this.paras = this.originalPras;
           this.haveparas = true;
+          this.style();
         }
-        this.editparas();
-        console.log(this.paras);
-        // this.fallfigures();
-        this.style();
+        else{
+          this.editparas();
+          if (this.checkParas()){
+            this.fallfigures();
+            console.log(this.field);
+            this.style();
+          }
+        }
       }
+    }, 500);
+  }
+  checkParas(){
+    for (let i in this.paras){
+      if (this.field[Number(i[0])+1][Number(i[0])].status === 2){
+        return false;
+      }
+    }
+    return true;
   }
   fallfigures(){
     for (let i = 0; i < 4; i++){
-      this.field[Number(this.originalPras[i][0])][Number(this.originalPras[i][1])].status = 0;
-      this.field[Number(this.originalPras[1][0])][Number(this.originalPras[i][1])].colorSetter('gainsboro');
-      this.originalPras[i] = String(Number(this.originalPras[i][0]) + 1) + this.originalPras[i][1];
-      this.field[Number(this.originalPras[1][0])][Number(this.originalPras[i][1])].status = 2;
-      this.field[Number(this.originalPras[1][0])][Number(this.originalPras[i][1])].colorSetter(this.originalPras[4]);
+      this.field[Number(this.originalPras[i][0])][Number(this.originalPras[i][1])].colorSetter('gainsboro');
+    }
+    for (let i = 0; i < 4; i++){
+      this.field[Number(this.originalPras[i][0]) + 1][Number(this.originalPras[i][1])].colorSetter(this.originalPras[4]);
+      this.field[Number(this.originalPras[i][0]) + 1][Number(this.originalPras[i][1])].status = 2;
     }
   }
   editparas(){
-    const matches: Array<String> = new Array();
-    const paras = new Array();
+    var paras = new Array();
     // tslint:disable-next-line: forin
     for (const k in this.originalPras){
       if (Number(k) === 4){
@@ -80,34 +91,33 @@ export class TetrisComponent implements OnInit {
       }
       paras.push(this.originalPras[k]);
     }
-
-    console.log(paras);
-    let counteri = 0;
-    let countern = 0;
-    for (let i in paras){
-      console.log(paras[i], paras);
-      let max = paras[i];
-      // tslint:disable-next-line: forin
-      for (let n in paras){
-        if (paras[i] === paras[n]){
-          countern++;
-          continue;
+    this.paras = [];
+    var dimesion = [new Array(), new Array(), new Array(), new Array()];
+    var counter = 0;
+    for (let i of paras){
+      for (let k in dimesion){
+        if (dimesion[k][0] === undefined){
+          dimesion[k].push(i);
+          break;
         }
-        if (paras[i][1] === paras[n][1]){
-          if (max[0] < paras[n][0]){
-            console.log('max gefunden', paras[i], paras[n]);
-            paras.splice(counteri, 1);
-            console.log(paras);
-            max = paras[n];
-          }
+        else if (dimesion[k][0][1] === i[1]){
+          dimesion[k].push(i);
+          break;
         }
-        countern++;
       }
-      matches.push(max);
-      counteri++;
     }
-    console.log(matches);
-    console.log(paras);
+    for (let i of dimesion){
+      if (i[0] === undefined){
+        continue;
+      }
+      let max = '00';
+      for (let k of i){
+        if (max[0] <= k[0]){
+          max = k;
+        }
+      }
+      this.paras.push(max);
+    }
   }
   checkGame(): boolean{
     return true;
@@ -167,6 +177,7 @@ class Item{
     if (color === 'gainsboro'){
       this.color = color;
       this.bordercolor = 'grey';
+      this.status = 0;
     }
     else{
       this.color  = color;
