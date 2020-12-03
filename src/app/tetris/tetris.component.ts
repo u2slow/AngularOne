@@ -57,17 +57,31 @@ export class TetrisComponent implements OnInit {
         else{
           this.editparas();
           if (this.checkParas()){
+            this.style();
             this.fallfigures();
             console.log(this.field);
             this.style();
           }
+          else{
+            for (let i = 0; i < 4; i++){
+              this.field[Number(this.originalPras[i][0])][Number(this.originalPras[i][1])].status = 1;
+            }
+          }
         }
       }
-    }, 500);
+    }, 1000);
   }
   checkParas(){
+    // tslint:disable-next-line: forin
     for (let i in this.paras){
-      if (this.field[Number(i[0])+1][Number(i[0])].status === 2){
+      if (Number(this.paras[i][0]) + 1 > 7){
+        this.haveparas = false;
+        console.log('jo alles falsch');
+        return false;
+      }
+      if (this.field[Number(this.paras[i][0]) + 1][Number(this.paras[i][1])].status === 1){
+        this.haveparas = false;
+        console.log('jo alles falsch');
         return false;
       }
     }
@@ -76,11 +90,13 @@ export class TetrisComponent implements OnInit {
   fallfigures(){
     for (let i = 0; i < 4; i++){
       this.field[Number(this.originalPras[i][0])][Number(this.originalPras[i][1])].colorSetter('gainsboro');
+      this.originalPras[i] = String(Number(this.originalPras[i][0]) + 1) + this.originalPras[i][1];
     }
     for (let i = 0; i < 4; i++){
-      this.field[Number(this.originalPras[i][0]) + 1][Number(this.originalPras[i][1])].colorSetter(this.originalPras[4]);
-      this.field[Number(this.originalPras[i][0]) + 1][Number(this.originalPras[i][1])].status = 2;
+      this.field[Number(this.originalPras[i][0])][Number(this.originalPras[i][1])].colorSetter(this.originalPras[4]);
+      this.field[Number(this.originalPras[i][0])][Number(this.originalPras[i][1])].status = 2;
     }
+    console.log(this.originalPras);
   }
   editparas(){
     var paras = new Array();
@@ -120,6 +136,16 @@ export class TetrisComponent implements OnInit {
     }
   }
   checkGame(): boolean{
+    for (let i = 0; i < 3; i++){
+      if (this.field[1][i].status === 1){
+        console.log('Loooooose');
+        return false;
+      }
+      if (this.field[0][i].status === 1){
+        console.log('Loooooose');
+        return false;
+      }
+    }
     return true;
   }
   style(){
@@ -133,7 +159,7 @@ export class TetrisComponent implements OnInit {
     }
   }
   buildFigure(): Array<string>{
-    const random = Math.random() * 5;
+    let random = Math.random() * 5;
     let paras = [];
     if (random < 1){
       paras = ['03', '04', '14', '15', 'green'];
