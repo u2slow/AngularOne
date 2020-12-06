@@ -1,16 +1,24 @@
 import { element } from 'protractor';
-import { Component, OnInit } from '@angular/core';
+import { Component, OnInit, HostListener  } from '@angular/core';
 import { range } from 'rxjs';
 import { strict } from 'assert';
 import { stringify } from 'querystring';
 import { NumberSymbol } from '@angular/common';
 import { newArray } from '@angular/compiler/src/util';
+import { hasLifecycleHook } from '@angular/compiler/src/lifecycle_reflector';
+
+export enum KEY_CODE {
+  RIGHT_ARROW = 'ArrowRight',
+  LEFT_ARROW = 'ArrowLeft',
+  ArrowDown = 'ArrowDown'
+}
 
 @Component({
   selector: 'app-tetris',
   templateUrl: './tetris.component.html',
   styleUrls: ['./tetris.component.css']
 })
+
 export class TetrisComponent implements OnInit {
   field: Array<Array<Item>> = [[new Item(), new Item(), new Item(), new Item(), new Item(), new Item(), new Item(), new Item()],
                                [new Item(), new Item(), new Item(), new Item(), new Item(), new Item(), new Item(), new Item()],
@@ -24,12 +32,14 @@ export class TetrisComponent implements OnInit {
   haveparas = false;
   paras;
   originalPras;
+  button;
   constructor() {
   }
 
   ngOnInit(): void {
   }
   startGame(){
+    this.button = document.getElementById('start');
     document.getElementById('start').remove();
     for (let i = 0; i < 8; i++){
       for (let k = 0; k < 8; k++){
@@ -46,6 +56,9 @@ export class TetrisComponent implements OnInit {
     }
     this.style();
     console.log (this.field);
+    this.game();
+  }
+  game(){
     this.gameinterval = setInterval(() => {
       if (this.checkGame()){
         if (!this.haveparas){
@@ -69,7 +82,69 @@ export class TetrisComponent implements OnInit {
           }
         }
       }
+      else {
+        for (let i = 0; i < 8; i++){
+          for (let k = 0; k < 8; k++){
+            const id = String(i) + '/' + String(k);
+            document.getElementById(id).remove();
+          }
+        }
+        const element = document.getElementById('raster');
+        element.appendChild(this.button);
+        clearInterval(this.gameinterval);
+      }
     }, 1000);
+  }
+  fallInstant(){
+    clearInterval(this.gameinterval);
+    console.log('Hallo')
+    this.haveparas = false;
+    const intervall = setInterval(() => {
+      console.log(this.checkParas);
+      this.editparas();
+      if (this.checkParas()){
+        this.style();
+        this.fallfigures();
+        console.log(this.field);
+        this.style();
+      }
+      else{
+        for (let i = 0; i < 4; i++){
+          this.field[Number(this.originalPras[i][0])][Number(this.originalPras[i][1])].status = 1;
+        }
+        console.log('Stooooooooooooooooooooooooooooooooooooooooooooooop');
+        clearInterval(intervall);
+        this.game();
+      }
+    }, 200);
+  }
+  turnLeft(){
+    for (let i = 0; i < 4; i++){
+      var para = Number(this.originalPras[i][1]) + 1;
+      if (para > 7){
+        continue;
+      }
+      this.field[Number(this.originalPras[i][0])][Number(this.originalPras[i][1])].colorSetter('gainsboro');
+      this.originalPras[i] = this.originalPras[i][0] + String(para);
+    }
+    for (let i = 0; i < 4; i++){
+      this.field[Number(this.originalPras[i][0])][Number(this.originalPras[i][1])].colorSetter(this.originalPras[4]);
+      this.field[Number(this.originalPras[i][0])][Number(this.originalPras[i][1])].status = 2;
+    }
+  }
+  turnRight(){
+    for (let i = 0; i < 4; i++){
+      var para = Number(this.originalPras[i][1]) - 1;
+      if (para < 0){
+        continue;
+      }
+      this.field[Number(this.originalPras[i][0])][Number(this.originalPras[i][1])].colorSetter('gainsboro');
+      this.originalPras[i] = this.originalPras[i][0] + String(para);
+    }
+    for (let i = 0; i < 4; i++){
+      this.field[Number(this.originalPras[i][0])][Number(this.originalPras[i][1])].colorSetter(this.originalPras[4]);
+      this.field[Number(this.originalPras[i][0])][Number(this.originalPras[i][1])].status = 2;
+    }
   }
   checkParas(){
     // tslint:disable-next-line: forin
@@ -136,7 +211,7 @@ export class TetrisComponent implements OnInit {
     }
   }
   checkGame(): boolean{
-    for (let i = 0; i < 3; i++){
+    for (let i = 2; i < 5; i++){
       if (this.field[1][i].status === 1){
         console.log('Loooooose');
         return false;
@@ -187,6 +262,21 @@ export class TetrisComponent implements OnInit {
       this.field[Number(paras[i][0])][Number( paras[i][1])].status = 2;
     }
     return paras;
+    }
+    @HostListener('window:keyup', ['$event'])
+    keyEvent(event: KeyboardEvent) {
+      console.log(event);
+
+      if (event.key === KEY_CODE.RIGHT_ARROW) {
+        this.turnLeft();
+      }
+
+      if (event.key === KEY_CODE.LEFT_ARROW) {
+        this.turnRight();
+      }
+      if (event.key === KEY_CODE.ArrowDown){
+        this.fallInstant();
+      }
     }
 }
 class Item{

@@ -1,7 +1,7 @@
 <div class="divhead">
   <p class="head">Das ist das schöne Spiel.</p>
   <div class="game">
-  <div id="raster">
+  <div id="raster" onkeydown="keyEvent(event)">
     <button (click)="startGame()" id="start">Clicke um das Spiel zu starten</button>
   </div>
   <button (click)="buildFigure()">neu</button>
