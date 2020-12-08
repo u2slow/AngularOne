@@ -310,9 +310,7 @@ chaeck ob eine reihe voll ist wenn ja dann alle
 true blöcke einen nach unten durch durloopen der gesamten liste
 dann wieder von vorne
 dann wieder von vorne
-
 buildfigure
-
 in den if abschnitten muss nur die jewaligen ids in einem Array gespeihcert werden und dann
  am wnde styöe() diese Arry dann an den Intervall ao spart man sich das loopen durch das ganze
  feld*/
