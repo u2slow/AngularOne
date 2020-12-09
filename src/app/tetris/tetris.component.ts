@@ -135,7 +135,7 @@ export class TetrisComponent implements OnInit {
   turnRight(){
     for (let i = 0; i < 4; i++){
       var para = Number(this.originalPras[i][1]) - 1;
-      if (para < 0){
+      if (para > 0){
         continue;
       }
       this.field[Number(this.originalPras[i][0])][Number(this.originalPras[i][1])].colorSetter('gainsboro');
@@ -234,10 +234,10 @@ export class TetrisComponent implements OnInit {
     }
   }
   buildFigure(): Array<string>{
-    let random = Math.random() * 5;
+    let random = Math.random() * 7;
     let paras = [];
     if (random < 1){
-      paras = ['03', '04', '14', '15', 'green'];
+      paras = ['03', '04', '13', '12', 'green'];
     }
     else if (random > 1 && random < 2){
       paras = ['03', '13', '23', '24', 'yellow'];
