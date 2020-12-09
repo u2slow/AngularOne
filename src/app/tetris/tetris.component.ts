@@ -118,32 +118,45 @@ export class TetrisComponent implements OnInit {
       }
     }, 200);
   }
-  turnLeft(){
+  turnRight(){
+    let check = true;
     for (let i = 0; i < 4; i++){
-      var para = Number(this.originalPras[i][1]) + 1;
-      if (para > 7){
-        continue;
+      if (Number(this.originalPras[i][1]) + 1 > 7){
+        check = false;
+        break;
       }
-      this.field[Number(this.originalPras[i][0])][Number(this.originalPras[i][1])].colorSetter('gainsboro');
-      this.originalPras[i] = this.originalPras[i][0] + String(para);
     }
-    for (let i = 0; i < 4; i++){
-      this.field[Number(this.originalPras[i][0])][Number(this.originalPras[i][1])].colorSetter(this.originalPras[4]);
-      this.field[Number(this.originalPras[i][0])][Number(this.originalPras[i][1])].status = 2;
+    if (check){
+      for (let i = 0; i < 4; i++){
+        var para = Number(this.originalPras[i][1]) + 1;
+        this.field[Number(this.originalPras[i][0])][Number(this.originalPras[i][1])].colorSetter('gainsboro');
+        this.originalPras[i] = this.originalPras[i][0] + String(para);
+      }
+      for (let i = 0; i < 4; i++){
+        this.field[Number(this.originalPras[i][0])][Number(this.originalPras[i][1])].colorSetter(this.originalPras[4]);
+        this.field[Number(this.originalPras[i][0])][Number(this.originalPras[i][1])].status = 2;
+      }
     }
   }
-  turnRight(){
+  turnLeft(){
+    let check = true;
     for (let i = 0; i < 4; i++){
       var para = Number(this.originalPras[i][1]) - 1;
       if (para < 0){
-        continue;
+        check = false;
+        break;
       }
-      this.field[Number(this.originalPras[i][0])][Number(this.originalPras[i][1])].colorSetter('gainsboro');
-      this.originalPras[i] = this.originalPras[i][0] + String(para);
     }
-    for (let i = 0; i < 4; i++){
-      this.field[Number(this.originalPras[i][0])][Number(this.originalPras[i][1])].colorSetter(this.originalPras[4]);
-      this.field[Number(this.originalPras[i][0])][Number(this.originalPras[i][1])].status = 2;
+    if (check){
+      for (let i = 0; i < 4; i++){
+        var para = Number(this.originalPras[i][1]) - 1;
+        this.field[Number(this.originalPras[i][0])][Number(this.originalPras[i][1])].colorSetter('gainsboro');
+        this.originalPras[i] = this.originalPras[i][0] + String(para);
+      }
+      for (let i = 0; i < 4; i++){
+        this.field[Number(this.originalPras[i][0])][Number(this.originalPras[i][1])].colorSetter(this.originalPras[4]);
+        this.field[Number(this.originalPras[i][0])][Number(this.originalPras[i][1])].status = 2;
+      }
     }
   }
   checkParas(){
@@ -268,11 +281,11 @@ export class TetrisComponent implements OnInit {
       console.log(event);
 
       if (event.key === KEY_CODE.RIGHT_ARROW) {
-        this.turnLeft();
+        this.turnRight();
       }
 
       if (event.key === KEY_CODE.LEFT_ARROW) {
-        this.turnRight();
+        this.turnLeft();
       }
       if (event.key === KEY_CODE.ArrowDown){
         this.fallInstant();
