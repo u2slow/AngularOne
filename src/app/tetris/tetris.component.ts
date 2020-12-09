@@ -10,7 +10,8 @@ import { hasLifecycleHook } from '@angular/compiler/src/lifecycle_reflector';
 export enum KEY_CODE {
   RIGHT_ARROW = 'ArrowRight',
   LEFT_ARROW = 'ArrowLeft',
-  ArrowDown = 'ArrowDown'
+  ArrowDown = 'ArrowDown',
+  ArrowUp = 'ArrowUp'
 }
 
 @Component({
@@ -33,6 +34,7 @@ export class TetrisComponent implements OnInit {
   paras;
   originalPras;
   button;
+  rotationSwitch = false;
   constructor() {
   }
 
@@ -95,6 +97,30 @@ export class TetrisComponent implements OnInit {
       }
     }, 1000);
   }
+  rotate(){
+    if (this.originalPras[5] != 'NA'){
+      for(let i = 0; i < 4; i++){
+        let deltaX = Number(this.originalPras[5][0]) - Number(this.originalPras[i][0]);
+        let deltaY = Number(this.originalPras[5][1]) - Number(this.originalPras[i][1]);
+        if (Math.sign(deltaY) == -1){
+          deltaY = deltaY* -1;
+        }
+        if (Math.sign(deltaX) == -1){
+          deltaX = deltaX* -1;
+        }
+        console.log(deltaY);
+        console.log(deltaX);
+        if (this.rotationSwitch){
+          deltaX = deltaX * -1;
+        }
+        else{
+          deltaY = deltaY * -1;
+        }
+        this.originalPras[i] = (String(deltaY + Number(this.originalPras[i][0]))+ String(deltaX + Number(this.originalPras[i][1])));
+      }
+      this.rotationSwitch = !this.rotationSwitch;
+    }
+  }
   fallInstant(){
     clearInterval(this.gameinterval);
     console.log('Hallo')
@@ -125,6 +151,10 @@ export class TetrisComponent implements OnInit {
         check = false;
         break;
       }
+      if (this.field[Number(this.originalPras[i][0])][Number(this.originalPras[i][1]) +1].status == 1){
+        check = false;
+        break;
+      }
     }
     if (check){
       for (let i = 0; i < 4; i++){
@@ -143,6 +173,10 @@ export class TetrisComponent implements OnInit {
     for (let i = 0; i < 4; i++){
       var para = Number(this.originalPras[i][1]) - 1;
       if (para < 0){
+        check = false;
+        break;
+      }
+      if (this.field[Number(this.originalPras[i][0])][Number(this.originalPras[i][1])-1].status == 1){
         check = false;
         break;
       }
@@ -179,6 +213,9 @@ export class TetrisComponent implements OnInit {
     for (let i = 0; i < 4; i++){
       this.field[Number(this.originalPras[i][0])][Number(this.originalPras[i][1])].colorSetter('gainsboro');
       this.originalPras[i] = String(Number(this.originalPras[i][0]) + 1) + this.originalPras[i][1];
+    }
+    if (this.originalPras[5] != 'NA'){
+      this.originalPras[5] = String(Number(this.originalPras[5][0]) + 1) + this.originalPras[5][1];
     }
     for (let i = 0; i < 4; i++){
       this.field[Number(this.originalPras[i][0])][Number(this.originalPras[i][1])].colorSetter(this.originalPras[4]);
@@ -247,10 +284,11 @@ export class TetrisComponent implements OnInit {
     }
   }
   buildFigure(): Array<string>{
-    let random = Math.random() * 5;
+    let random = Math.random() * 6;
     let paras = [];
+    console.log(random);
     if (random < 1){
-      paras = ['03', '04', '14', '15', 'green'];
+      paras = ['03', '04', '13', '12', 'green'];
     }
     else if (random > 1 && random < 2){
       paras = ['03', '13', '23', '24', 'yellow'];
@@ -265,11 +303,15 @@ export class TetrisComponent implements OnInit {
       paras = ['02', '03', '13', '14', 'orange'];
     }
     else if (random > 5 && random < 6){
-      paras = ['03', '13', '23', '25', 'grey'];
+      paras = ['03', '13', '23', '22', 'black'];
     }
-    else if (random > 6){
-      paras = ['02', '03', '14', '12', 'black'];
+    if (paras[4] != 'turquoise'){
+      paras.push('13');
     }
+    else{
+      paras.push('NA');
+    }
+    console.log(paras);
     for (let i = 0; i < 4; i++){
       this.field[Number(paras[i][0])][Number( paras[i][1])].colorSetter(paras[4]);
       this.field[Number(paras[i][0])][Number( paras[i][1])].status = 2;
@@ -289,6 +331,9 @@ export class TetrisComponent implements OnInit {
       }
       if (event.key === KEY_CODE.ArrowDown){
         this.fallInstant();
+      }
+      if (event.key === KEY_CODE.ArrowUp){
+        this.rotate();
       }
     }
 }
