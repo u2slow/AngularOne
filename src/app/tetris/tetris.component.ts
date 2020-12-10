@@ -97,30 +97,25 @@ export class TetrisComponent implements OnInit {
       }
     }, 1000);
   }
-  rotate(){
-    if (this.originalPras[5] != 'NA'){
-      for(let i = 0; i < 4; i++){
-        let deltaX = Number(this.originalPras[5][0]) - Number(this.originalPras[i][0]);
-        let deltaY = Number(this.originalPras[5][1]) - Number(this.originalPras[i][1]);
-        if (Math.sign(deltaY) == -1){
-          deltaY = deltaY* -1;
-        }
-        if (Math.sign(deltaX) == -1){
-          deltaX = deltaX* -1;
-        }
-        console.log(deltaY);
-        console.log(deltaX);
-        if (this.rotationSwitch){
-          deltaX = deltaX * -1;
-        }
-        else{
-          deltaY = deltaY * -1;
-        }
-        this.originalPras[i] = (String(deltaY + Number(this.originalPras[i][0]))+ String(deltaX + Number(this.originalPras[i][1])));
-      }
-      this.rotationSwitch = !this.rotationSwitch;
+  rotate() {
+    for (let i = 0; i<4;i++){
+      let cx = this.originalPras[i][1];
+      let cy = this.originalPras[i][0];
+      let x = this.originalPras[5][1];
+      let y = this.originalPras[5][0];
+      let angle = 270;
+      var radians = (Math.PI / 180) * angle,
+        cos = Math.cos(radians),
+        sin = Math.sin(radians),
+        nx = (cos * (x - cx)) + (sin * (y - cy)) + cx,
+        ny = (cos * (y - cy)) - (sin * (x - cx)) + cy;
+      console.log(nx);
+      console.log(ny);
+      this.originalPras[i] = String(String(ny)+ String(nx));
+      console.log(this.originalPras);
     }
-  }
+}
+
   fallInstant(){
     clearInterval(this.gameinterval);
     console.log('Hallo')
