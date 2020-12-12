@@ -98,18 +98,19 @@ export class TetrisComponent implements OnInit {
   }
   rotate(){
     console.log(this.originalPras);
-    let radians = 1.5708;
     for (let i = 0; i < 4; i++){
       const x = this.originalPras[i][1];
       const y = this.originalPras[i][0];
       const offset_x = this.originalPras[5][1];
       const offset_y = this.originalPras[5][0];
-      const adjusted_x = (x - offset_x);
-      const adjusted_y = (y - offset_y);
-      const cos_rad = Math.cos(radians);
-      const sin_rad = Math.sin(radians);
+      const adjusted_x = x - offset_x;
+      const adjusted_y = y - offset_y;
+      const cos_rad = 0;
+      const sin_rad = 1;
       const qx = offset_x + cos_rad * adjusted_x + sin_rad * adjusted_y;
       const qy = offset_y + -sin_rad * adjusted_x + cos_rad * adjusted_y;
+      console.log(qy);
+      console.log(qx);
       this.originalPras[i] = String(qy) + String(qx);
     }
     //this.editparas();
