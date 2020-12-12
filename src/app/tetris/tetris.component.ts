@@ -34,7 +34,6 @@ export class TetrisComponent implements OnInit {
   paras;
   originalPras;
   button;
-  rotationSwitch = false;
   constructor() {
   }
 
@@ -97,25 +96,25 @@ export class TetrisComponent implements OnInit {
       }
     }, 1000);
   }
-  rotate() {
-    for (let i = 0; i<4;i++){
-      let cx = this.originalPras[i][1];
-      let cy = this.originalPras[i][0];
-      let x = this.originalPras[5][1];
-      let y = this.originalPras[5][0];
-      let angle = 270;
-      var radians = (Math.PI / 180) * angle,
-        cos = Math.cos(radians),
-        sin = Math.sin(radians),
-        nx = (cos * (x - cx)) + (sin * (y - cy)) + cx,
-        ny = (cos * (y - cy)) - (sin * (x - cx)) + cy;
-      console.log(nx);
-      console.log(ny);
-      this.originalPras[i] = String(String(ny)+ String(nx));
-      console.log(this.originalPras);
+  rotate(){
+    console.log(this.originalPras);
+    let radians = 1.5708;
+    for (let i = 0; i < 4; i++){
+      const x = this.originalPras[i][1];
+      const y = this.originalPras[i][0];
+      const offset_x = this.originalPras[5][1];
+      const offset_y = this.originalPras[5][0];
+      const adjusted_x = (x - offset_x);
+      const adjusted_y = (y - offset_y);
+      const cos_rad = Math.cos(radians);
+      const sin_rad = Math.sin(radians);
+      const qx = offset_x + cos_rad * adjusted_x + sin_rad * adjusted_y;
+      const qy = offset_y + -sin_rad * adjusted_x + cos_rad * adjusted_y;
+      this.originalPras[i] = String(qy) + String(qx);
     }
-}
-
+    //this.editparas();
+    console.log(this.originalPras);
+  }
   fallInstant(){
     clearInterval(this.gameinterval);
     console.log('Hallo')
@@ -146,10 +145,6 @@ export class TetrisComponent implements OnInit {
         check = false;
         break;
       }
-      if (this.field[Number(this.originalPras[i][0])][Number(this.originalPras[i][1]) +1].status == 1){
-        check = false;
-        break;
-      }
     }
     if (check){
       for (let i = 0; i < 4; i++){
@@ -168,10 +163,6 @@ export class TetrisComponent implements OnInit {
     for (let i = 0; i < 4; i++){
       var para = Number(this.originalPras[i][1]) - 1;
       if (para < 0){
-        check = false;
-        break;
-      }
-      if (this.field[Number(this.originalPras[i][0])][Number(this.originalPras[i][1])-1].status == 1){
         check = false;
         break;
       }
@@ -209,9 +200,7 @@ export class TetrisComponent implements OnInit {
       this.field[Number(this.originalPras[i][0])][Number(this.originalPras[i][1])].colorSetter('gainsboro');
       this.originalPras[i] = String(Number(this.originalPras[i][0]) + 1) + this.originalPras[i][1];
     }
-    if (this.originalPras[5] != 'NA'){
-      this.originalPras[5] = String(Number(this.originalPras[5][0]) + 1) + this.originalPras[5][1];
-    }
+    this.originalPras[5] = String(Number(this.originalPras[5][0]) + 1) + this.originalPras[5][1];
     for (let i = 0; i < 4; i++){
       this.field[Number(this.originalPras[i][0])][Number(this.originalPras[i][1])].colorSetter(this.originalPras[4]);
       this.field[Number(this.originalPras[i][0])][Number(this.originalPras[i][1])].status = 2;
@@ -279,11 +268,10 @@ export class TetrisComponent implements OnInit {
     }
   }
   buildFigure(): Array<string>{
-    let random = Math.random() * 6;
+    let random = Math.random() * 5;
     let paras = [];
-    console.log(random);
     if (random < 1){
-      paras = ['03', '04', '13', '12', 'green'];
+      paras = ['03', '04', '14', '15', 'green'];
     }
     else if (random > 1 && random < 2){
       paras = ['03', '13', '23', '24', 'yellow'];
@@ -298,15 +286,17 @@ export class TetrisComponent implements OnInit {
       paras = ['02', '03', '13', '14', 'orange'];
     }
     else if (random > 5 && random < 6){
-      paras = ['03', '13', '23', '22', 'black'];
+      paras = ['03', '13', '23', '25', 'grey'];
     }
-    if (paras[4] != 'turquoise'){
-      paras.push('13');
+    else if (random > 6){
+      paras = ['02', '03', '14', '12', 'black'];
+    }
+    if (paras[4] === 'turquoise'){
+      paras.push('NA')
     }
     else{
-      paras.push('NA');
+      paras.push('13');
     }
-    console.log(paras);
     for (let i = 0; i < 4; i++){
       this.field[Number(paras[i][0])][Number( paras[i][1])].colorSetter(paras[4]);
       this.field[Number(paras[i][0])][Number( paras[i][1])].status = 2;
