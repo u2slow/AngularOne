@@ -63,6 +63,7 @@ export class TetrisComponent implements OnInit {
     this.gameinterval = setInterval(() => {
       if (this.checkGame()){
         if (!this.haveparas){
+          this.checkLine;
           this.originalPras = this.buildFigure();
           this.paras = this.originalPras;
           this.haveparas = true;
@@ -74,6 +75,7 @@ export class TetrisComponent implements OnInit {
             this.style();
             this.fallfigures();
             console.log(this.field);
+            this.checkLine();
             this.style();
           }
           else{
@@ -96,32 +98,61 @@ export class TetrisComponent implements OnInit {
       }
     }, 1000);
   }
-  rotate(){
-    console.log(this.originalPras);
-    for (let i = 0; i < 4; i++){
-      const x = this.originalPras[i][1];
-      const y = this.originalPras[i][0];
-      const offset_x = this.originalPras[5][1];
-      const offset_y = this.originalPras[5][0];
-      const adjusted_x = x - offset_x;
-      const adjusted_y = y - offset_y;
-      const cos_rad = 0;
-      const sin_rad = 1;
-      const qx = offset_x + cos_rad * adjusted_x + sin_rad * adjusted_y;
-      const qy = offset_y + -sin_rad * adjusted_x + cos_rad * adjusted_y;
-      console.log(qy);
-      console.log(qx);
-      this.originalPras[i] = String(qy) + String(qx);
+  checkLine(){
+    let counter;
+    for (let i = 0;i < 8; i++){
+      counter = 0;
+      for(let k = 0;k < 8; k++){
+        if (this.field[i][k].status == 1){
+          counter++;
+        }
+      }
+      if (counter == 8){
+        console.log('lolololololololololo');
+        for(let k = 0;k < 8; k++){
+          this.field[i][k].colorSetter('gainsboro');
+        }
+        for(let k = i; k > 0; k--){
+          for(let l = 0; l < 8; l++){
+            if (this.field[k][l].status = 1){
+              this.field[Number(k+1)][l].colorSetter(this.field[k][l].color);
+              this.field[Number(k+1)][l].status = this.field[k][l].status;
+              this.field[k][l].colorSetter('gainsboro');
+            }
+          }
+        }
+      }
     }
-    //this.editparas();
-    console.log(this.originalPras);
+  }
+  rotate(){
+    if (this.originalPras[4] != 'turquoise'){
+      console.log(this.originalPras);
+      for (let i = 0; i < 4; i++){
+        this.field[Number(this.originalPras[i][0])][Number(this.originalPras[i][1])].colorSetter('gainsboro');
+        const x = Number(this.originalPras[i][1]);
+        const y = Number(this.originalPras[i][0]);
+        const offset_x = Number(this.originalPras[5][1]);
+        const offset_y = Number(this.originalPras[5][0]);
+        const adjusted_x = x - offset_x;
+        const adjusted_y = y - offset_y;
+        const cos_rad = 0;
+        const sin_rad = 1;
+        const qx = offset_x + cos_rad * adjusted_x + sin_rad * adjusted_y;
+        const qy = offset_y + -sin_rad * adjusted_x + cos_rad * adjusted_y;
+        this.originalPras[i] = String(qy) + String(qx);
+    }
+    }
+    for (let i = 0; i < 4; i++){
+      this.field[Number(this.originalPras[i][0])][Number(this.originalPras[i][1])].colorSetter(this.originalPras[4]);
+      this.field[Number(this.originalPras[i][0])][Number(this.originalPras[i][1])].status = 2;
+    }
+    this.style();
   }
   fallInstant(){
     clearInterval(this.gameinterval);
     console.log('Hallo')
     this.haveparas = false;
     const intervall = setInterval(() => {
-      console.log(this.checkParas);
       this.editparas();
       if (this.checkParas()){
         this.style();
@@ -158,6 +189,7 @@ export class TetrisComponent implements OnInit {
         this.field[Number(this.originalPras[i][0])][Number(this.originalPras[i][1])].status = 2;
       }
     }
+    this.style();
   }
   turnLeft(){
     let check = true;
@@ -179,6 +211,7 @@ export class TetrisComponent implements OnInit {
         this.field[Number(this.originalPras[i][0])][Number(this.originalPras[i][1])].status = 2;
       }
     }
+    this.style();
   }
   checkParas(){
     // tslint:disable-next-line: forin
@@ -270,6 +303,7 @@ export class TetrisComponent implements OnInit {
   }
   buildFigure(): Array<string>{
     let random = Math.random() * 5;
+    random = 2.5;
     let paras = [];
     if (random < 1){
       paras = ['03', '04', '14', '15', 'green'];
