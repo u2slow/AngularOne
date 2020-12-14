@@ -116,7 +116,7 @@ export class TetrisComponent implements OnInit {
           for(let l = 0; l < 8; l++){
             if (this.field[k][l].status = 1){
               this.field[Number(k+1)][l].colorSetter(this.field[k][l].color);
-              this.field[Number(k+1)][l].status = this.field[k][l].status;
+              this.field[Number(k+1)][l].status = 1;
               this.field[k][l].colorSetter('gainsboro');
             }
           }
@@ -376,6 +376,7 @@ class Item{
     else{
       this.color  = color;
       this.bordercolor = color;
+      this.status = 1;
     }
   }
 }
