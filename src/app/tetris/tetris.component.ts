@@ -63,7 +63,7 @@ export class TetrisComponent implements OnInit {
     this.gameinterval = setInterval(() => {
       if (this.checkGame()){
         if (!this.haveparas){
-          this.checkLine;
+          this.checkLine();
           this.originalPras = this.buildFigure();
           this.paras = this.originalPras;
           this.haveparas = true;
@@ -73,9 +73,9 @@ export class TetrisComponent implements OnInit {
           this.editparas();
           if (this.checkParas()){
             this.style();
+            this.checkLine();
             this.fallfigures();
             console.log(this.field);
-            this.checkLine();
             this.style();
           }
           else{
@@ -109,14 +109,46 @@ export class TetrisComponent implements OnInit {
       }
       if (counter == 8){
         console.log('lolololololololololo');
+        console.log(this.field);
+        /*
         for(let k = 0;k < 8; k++){
           this.field[i][k].colorSetter('gainsboro');
-        }
+        }*/
         for(let k = i; k > 0; k--){
+          console.log(k);
+          console.log(this.field);
           for(let l = 0; l < 8; l++){
-            if (this.field[k][l].status = 1){
+            if ( k != 7){
               this.field[Number(k+1)][l].colorSetter(this.field[k][l].color);
-              this.field[Number(k+1)][l].status = 1;
+              this.field[Number(k+1)][l].status = this.field[k][l].status;
+              this.field[k][l].colorSetter('gainsboro');
+            }
+          }
+        }
+        this.checkLine;
+      }
+    }
+  }
+  checkLine2(){
+    let counter;
+    for (let i in this.field){
+      counter = 0;
+      for (let j in this.field[i]){
+        if (this.field[i][j].status == 1){
+          counter ++;
+        }
+      }
+      if (counter == 8){
+        for(let k = 0;k < 8; k++){
+          this.field[i][k].colorSetter('gainsboro');
+          this.field[i][k].status = 0;
+        }
+        //alles fallen lassen
+        for (let k = 0; k < 7; k++){
+          for (let l in this.field[k]){
+            if (this.field[k][l].status = 1){
+              this.field[k+1][l].colorSetter(String(this.field[k][l].color));
+              this.field[k+1][l].status = 1;
               this.field[k][l].colorSetter('gainsboro');
             }
           }
@@ -173,7 +205,7 @@ export class TetrisComponent implements OnInit {
   turnRight(){
     let check = true;
     for (let i = 0; i < 4; i++){
-      if (Number(this.originalPras[i][1]) + 1 > 7){
+      if (Number(this.originalPras[i][1]) + 1 > 7|| this.field[Number(this.originalPras[i][0])][Number(this.originalPras[i][1])+1].status == 1){
         check = false;
         break;
       }
@@ -195,7 +227,7 @@ export class TetrisComponent implements OnInit {
     let check = true;
     for (let i = 0; i < 4; i++){
       var para = Number(this.originalPras[i][1]) - 1;
-      if (para < 0){
+      if (para < 0 || this.field[Number(this.originalPras[i][0])][Number(this.originalPras[i][1])-1].status == 1){
         check = false;
         break;
       }
@@ -303,7 +335,6 @@ export class TetrisComponent implements OnInit {
   }
   buildFigure(): Array<string>{
     let random = Math.random() * 5;
-    random = 2.5;
     let paras = [];
     if (random < 1){
       paras = ['03', '04', '14', '15', 'green'];
@@ -376,7 +407,6 @@ class Item{
     else{
       this.color  = color;
       this.bordercolor = color;
-      this.status = 1;
     }
   }
 }
