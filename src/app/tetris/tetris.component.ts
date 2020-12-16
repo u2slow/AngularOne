@@ -110,10 +110,6 @@ export class TetrisComponent implements OnInit {
       if (counter == 8){
         console.log('lolololololololololo');
         console.log(this.field);
-        /*
-        for(let k = 0;k < 8; k++){
-          this.field[i][k].colorSetter('gainsboro');
-        }*/
         for(let k = i; k > 0; k--){
           console.log(k);
           console.log(this.field);
@@ -196,7 +192,6 @@ export class TetrisComponent implements OnInit {
         for (let i = 0; i < 4; i++){
           this.field[Number(this.originalPras[i][0])][Number(this.originalPras[i][1])].status = 1;
         }
-        console.log('Stooooooooooooooooooooooooooooooooooooooooooooooop');
         clearInterval(intervall);
         this.game();
       }
@@ -410,16 +405,3 @@ class Item{
     }
   }
 }
-/* in while schleife
-random zahl um die figur zu bestimmen
-figur fällt durch einen intervall
-if der nächste true dann stop und wieder von vorne
-in while
-chaeck ob eine reihe voll ist wenn ja dann alle
-true blöcke einen nach unten durch durloopen der gesamten liste
-dann wieder von vorne
-dann wieder von vorne
-buildfigure
-in den if abschnitten muss nur die jewaligen ids in einem Array gespeihcert werden und dann
- am wnde styöe() diese Arry dann an den Intervall ao spart man sich das loopen durch das ganze
- feld*/
