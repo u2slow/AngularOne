@@ -125,33 +125,6 @@ export class TetrisComponent implements OnInit {
       }
     }
   }
-  checkLine2(){
-    let counter;
-    for (let i in this.field){
-      counter = 0;
-      for (let j in this.field[i]){
-        if (this.field[i][j].status == 1){
-          counter ++;
-        }
-      }
-      if (counter == 8){
-        for(let k = 0;k < 8; k++){
-          this.field[i][k].colorSetter('gainsboro');
-          this.field[i][k].status = 0;
-        }
-        //alles fallen lassen
-        for (let k = 0; k < 7; k++){
-          for (let l in this.field[k]){
-            if (this.field[k][l].status = 1){
-              this.field[k+1][l].colorSetter(String(this.field[k][l].color));
-              this.field[k+1][l].status = 1;
-              this.field[k][l].colorSetter('gainsboro');
-            }
-          }
-        }
-      }
-    }
-  }
   rotate(){
     if (this.originalPras[4] != 'turquoise'){
       console.log(this.originalPras);
